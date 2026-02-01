@@ -14,6 +14,8 @@ MVP complete with:
 - At least 1 non-alcoholic option always included in pairings
 - Enhanced fallback pairing with flavour keyword matching
 - No stock imagery (imageUrl: null) to avoid misrepresentation
+- Award badges highlighting award-winning drinks (CAMRA, IWSC, Great Taste Awards, etc.)
+- "See Reviews" buttons linking to external review sites (Untappd, Vivino, Whiskybase, Difford's Guide)
 
 ## Tech Stack
 - **Frontend**: React + TypeScript, Tailwind CSS, Shadcn/UI components, Wouter routing, TanStack Query
