@@ -80,20 +80,19 @@ export default function Home() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="relative max-w-xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <form onSubmit={handleSubmit} className="max-w-xl mx-auto w-full">
+            <div className="flex items-center gap-2 bg-white/95 rounded-md border-2 border-border focus-within:border-accent h-14 px-4">
+              <Search className="h-5 w-5 text-muted-foreground flex-shrink-0" />
               <Input
                 type="text"
                 placeholder="What are you eating?"
                 value={dish}
                 onChange={(e) => setDish(e.target.value)}
-                className="pl-12 pr-24 h-14 text-lg rounded-md border-2 focus:border-accent bg-white/95"
+                className="flex-1 border-0 h-full text-lg bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0"
                 data-testid="input-dish-search"
               />
               <Button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2"
                 disabled={!dish.trim()}
                 data-testid="button-search-submit"
               >
