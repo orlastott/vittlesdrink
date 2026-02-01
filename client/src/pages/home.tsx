@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Search, Wine, Beer, GlassWater } from "lucide-react";
+import { Search, Wine, Beer, GlassWater, Leaf, Cherry } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -8,11 +8,28 @@ import { trendingDishes } from "@shared/schema";
 import cookingVideo from "@/assets/videos/cooking-hero.mp4";
 import drinksVideo from "@/assets/videos/drinks-hero.mp4";
 
+const drinkTypeFilters = [
+  { id: "beer", label: "Beer & Ale", icon: Beer, color: "text-amber-500" },
+  { id: "cider", label: "Cider", icon: Cherry, color: "text-orange-500" },
+  { id: "wine", label: "Wine", icon: Wine, color: "text-rose-500" },
+  { id: "spirits", label: "Spirits", icon: Leaf, color: "text-emerald-500" },
+  { id: "soft", label: "Soft Drinks", icon: GlassWater, color: "text-blue-400" },
+];
+
 export default function Home() {
   const [dish, setDish] = useState("");
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [, setLocation] = useLocation();
   const [activeVideo, setActiveVideo] = useState(0);
   const videos = [cookingVideo, drinksVideo];
+  
+  const toggleType = (typeId: string) => {
+    setSelectedTypes(prev => 
+      prev.includes(typeId) 
+        ? prev.filter(t => t !== typeId)
+        : [...prev, typeId]
+    );
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,7 +40,12 @@ export default function Home() {
 
   const handleSearch = (searchDish: string) => {
     if (searchDish.trim()) {
-      setLocation(`/results?dish=${encodeURIComponent(searchDish.trim())}`);
+      const params = new URLSearchParams();
+      params.set("dish", searchDish.trim());
+      if (selectedTypes.length > 0) {
+        params.set("types", selectedTypes.join(","));
+      }
+      setLocation(`/results?${params.toString()}`);
     }
   };
 
@@ -78,6 +100,44 @@ export default function Home() {
             <p className="text-gray-200 text-lg md:text-xl max-w-xl mx-auto drop-shadow">
               Match your meal with the finest British ales, ciders, gins, whiskies, and more.
             </p>
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-sm text-gray-300 uppercase tracking-wider font-medium drop-shadow">
+              Filter by drink type <span className="normal-case opacity-70">(optional)</span>
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {drinkTypeFilters.map((filter) => {
+                const isSelected = selectedTypes.includes(filter.id);
+                const Icon = filter.icon;
+                return (
+                  <button
+                    key={filter.id}
+                    type="button"
+                    onClick={() => toggleType(filter.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                      isSelected
+                        ? "bg-white text-gray-900 shadow-lg"
+                        : "bg-white/20 text-white border border-white/30 backdrop-blur-sm hover:bg-white/30"
+                    }`}
+                    data-testid={`filter-${filter.id}`}
+                  >
+                    <Icon className={`h-4 w-4 ${isSelected ? filter.color : ""}`} />
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+            {selectedTypes.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedTypes([])}
+                className="text-sm text-gray-300 hover:text-white underline underline-offset-2"
+                data-testid="button-clear-filters"
+              >
+                Clear filters (show all)
+              </button>
+            )}
           </div>
 
           <form onSubmit={handleSubmit} className="max-w-xl mx-auto w-full">

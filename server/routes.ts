@@ -177,14 +177,50 @@ export async function registerRoutes(
   app.get("/api/pairing", async (req, res) => {
     try {
       const dish = req.query.dish as string;
+      const typesParam = req.query.types as string | undefined;
+      
       if (!dish || dish.trim() === "") {
         return res.status(400).json({ error: "Dish parameter is required" });
       }
 
       // Get all drinks from the database
-      const allDrinks = await storage.getAllDrinks();
+      let allDrinks = await storage.getAllDrinks();
       if (allDrinks.length === 0) {
         return res.status(500).json({ error: "No drinks available in database" });
+      }
+      
+      // Filter drinks by type if specified
+      if (typesParam) {
+        const selectedTypes = typesParam.split(',').map(t => t.trim().toLowerCase());
+        
+        // Map filter IDs to drink types
+        const typeMapping: Record<string, string[]> = {
+          'beer': ['ale', 'beer', 'lager'],
+          'cider': ['cider'],
+          'wine': ['wine'],
+          'spirits': ['gin', 'whisky', 'whiskey', 'rum'],
+          'soft': ['tea', 'soft drink'],
+        };
+        
+        const allowedTypes: string[] = [];
+        for (const selected of selectedTypes) {
+          if (typeMapping[selected]) {
+            allowedTypes.push(...typeMapping[selected]);
+          }
+        }
+        
+        if (allowedTypes.length > 0) {
+          allDrinks = allDrinks.filter(drink => 
+            allowedTypes.some(t => drink.type.toLowerCase().includes(t))
+          );
+        }
+        
+        // If all drinks were filtered out, return an error
+        if (allDrinks.length === 0) {
+          return res.status(400).json({ 
+            error: "No drinks available matching your selected filters. Try selecting different drink types." 
+          });
+        }
       }
 
       // Use AI to analyze the dish and find pairings
@@ -209,7 +245,7 @@ IMPORTANT RULES:
 - Explain WHY the pairing works using flavour science
 - Be fun, engaging and educational - help people learn about pairing
 - Use British English spelling
-- ALWAYS include at least one non-alcoholic option (tea, soft drink) - 0% ABV drinks
+- Include a non-alcoholic option (0% ABV) if available in the provided list
 - Reference the drink's flavour notes specifically in your explanations`;
 
       const userPrompt = `Dish to analyze: "${dish}"
@@ -227,7 +263,7 @@ Please provide:
 1. A detailed flavour profile analysis of the dish (2-3 sentences covering: dominant flavours, fat/acid balance, cooking method effects, texture)
 2. 3-5 key flavour characteristics as single words or short phrases
 3. Select 2-3 BEST matching drinks from the database. REQUIREMENTS:
-   - At least ONE must be non-alcoholic (0% ABV)
+   - Include a non-alcoholic option (0% ABV) if available in the list
    - Prioritise micro-breweries and local producers when the flavour match is strong
    - Include at least one unexpected/creative pairing that works on flavour principles
 4. For each drink, explain WHY it pairs well - reference SPECIFIC flavour notes from both the dish AND the drink. Be educational!
@@ -306,11 +342,36 @@ Use the exact drink IDs from the database (1-indexed from the list). Return vali
       res.json(result);
     } catch (error) {
       console.error("Error generating AI pairing, using fallback:", error);
-      // Use fallback when AI fails
+      // Use fallback when AI fails - re-fetch and filter drinks
       try {
-        const allDrinks = await storage.getAllDrinks();
+        let fallbackDrinks = await storage.getAllDrinks();
+        const fallbackTypesParam = req.query.types as string | undefined;
+        
+        // Apply same filtering as above
+        if (fallbackTypesParam) {
+          const selectedTypes = fallbackTypesParam.split(',').map(t => t.trim().toLowerCase());
+          const typeMapping: Record<string, string[]> = {
+            'beer': ['ale', 'beer', 'lager'],
+            'cider': ['cider'],
+            'wine': ['wine'],
+            'spirits': ['gin', 'whisky', 'whiskey', 'rum'],
+            'soft': ['tea', 'soft drink'],
+          };
+          const allowedTypes: string[] = [];
+          for (const selected of selectedTypes) {
+            if (typeMapping[selected]) {
+              allowedTypes.push(...typeMapping[selected]);
+            }
+          }
+          if (allowedTypes.length > 0) {
+            fallbackDrinks = fallbackDrinks.filter(drink => 
+              allowedTypes.some(t => drink.type.toLowerCase().includes(t))
+            );
+          }
+        }
+        
         const dish = req.query.dish as string;
-        const fallbackResult = getFallbackPairings(dish, allDrinks);
+        const fallbackResult = getFallbackPairings(dish, fallbackDrinks);
         res.json(fallbackResult);
       } catch (fallbackError) {
         console.error("Fallback also failed:", fallbackError);

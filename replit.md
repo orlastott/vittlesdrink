@@ -16,6 +16,7 @@ MVP complete with:
 - No stock imagery (imageUrl: null) to avoid misrepresentation
 - Award badges highlighting award-winning drinks (CAMRA, IWSC, Great Taste Awards, etc.)
 - "See Reviews" buttons linking to external review sites (Untappd, Vivino, Whiskybase, Difford's Guide)
+- Drink type filters on homepage (Beer & Ale, Cider, Wine, Spirits, Soft Drinks) - optional multi-select
 
 ## Tech Stack
 - **Frontend**: React + TypeScript, Tailwind CSS, Shadcn/UI components, Wouter routing, TanStack Query

@@ -7,10 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { PairingResult } from "@shared/schema";
 
-async function fetchPairing(dish: string): Promise<PairingResult> {
-  const res = await fetch(`/api/pairing?dish=${encodeURIComponent(dish)}`);
+async function fetchPairing(dish: string, types?: string): Promise<PairingResult> {
+  const params = new URLSearchParams();
+  params.set("dish", dish);
+  if (types) {
+    params.set("types", types);
+  }
+  const res = await fetch(`/api/pairing?${params.toString()}`);
   if (!res.ok) {
-    throw new Error("Failed to fetch pairing");
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.error || "Failed to fetch pairing");
   }
   return res.json();
 }
@@ -75,10 +81,11 @@ function LoadingSkeleton() {
 export default function Results() {
   const searchParams = new URLSearchParams(window.location.search);
   const dish = searchParams.get('dish') || '';
+  const types = searchParams.get('types') || undefined;
 
   const { data, isLoading, error } = useQuery<PairingResult>({
-    queryKey: ['pairing', dish],
-    queryFn: () => fetchPairing(dish),
+    queryKey: ['pairing', dish, types],
+    queryFn: () => fetchPairing(dish, types),
     enabled: !!dish,
   });
 
