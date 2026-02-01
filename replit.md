@@ -1,16 +1,18 @@
 # Vittles - AI-Powered Food & Drink Matching App
 
 ## Overview
-A web application that helps users discover the perfect British alcoholic drink pairing for any dish. Uses AI (OpenAI) to analyze dish flavour profiles and recommend matching drinks from a curated database of British beverages.
+A web application that helps users discover the perfect British drink pairing for any dish - both alcoholic and non-alcoholic options. Uses AI (OpenAI) to analyze dish flavour profiles and recommend matching drinks from a curated database of British beverages.
 
 ## Current State
 MVP complete with:
-- Homepage with search bar and trending dishes
-- AI-powered pairing results page
-- Drink detail pages
+- Homepage with search bar, trending dishes, and immersive video backgrounds
+- AI-powered pairing results page with drink images
+- Drink detail pages with producer website links
 - Blog placeholder page
-- 15 seeded British drinks in database
+- 22 seeded British drinks (15 alcoholic + 7 non-alcoholic) in database
+- At least 1 non-alcoholic option always included in pairings
 - Fallback pairing mechanism when AI is unavailable
+- Stock imagery for all drinks
 
 ## Tech Stack
 - **Frontend**: React + TypeScript, Tailwind CSS, Shadcn/UI components, Wouter routing, TanStack Query
@@ -37,25 +39,32 @@ MVP complete with:
 ## Key Features
 
 ### Drink Database
-Located in `server/storage.ts` - contains 15 British drinks including:
-- Ales (Timothy Taylor's Landlord, Fuller's London Pride, etc.)
+Located in `server/storage.ts` - contains 22 British drinks:
+
+**Alcoholic (15 drinks):**
+- Ales (Timothy Taylor's Landlord, Fuller's London Pride, Black Sheep, Adnams Broadside)
 - Ciders (Aspall Suffolk, Westons Vintage, Thatchers Gold)
 - Gins (Sipsmith, Cotswolds, Hendrick's)
 - Whiskies (Glenfiddich, Laphroaig)
 - Wine (Nyetimber, Chapel Down)
 - Rum (Pusser's British Navy)
 
+**Non-Alcoholic (7 drinks):**
+- Tea (Yorkshire Tea, Twinings English Breakfast)
+- Soft Drinks (Fentimans Ginger Beer, Fentimans Cola, Belvoir Elderflower, Fever-Tree Tonic, Luscombe Lemonade)
+
 **To add more drinks**: Edit the `seedDrinks` array in `server/storage.ts`
 
 ### AI Pairing Engine
 Located in `server/routes.ts` at `/api/pairing`:
 - Analyzes dish flavour profile using OpenAI
-- Matches with 1-3 drinks from database
+- Matches with 2-3 drinks from database
+- Always includes at least 1 non-alcoholic option (0% ABV)
 - Generates friendly pairing explanations
 - Has fallback mechanism for when AI is unavailable
 
-### Affiliate Links
-Each drink has a placeholder `affiliateLink` field. **To add real affiliate links**: Update the values in `server/storage.ts` seedDrinks array.
+### Producer Links
+Each drink has real producer website links (e.g., timothytaylor.co.uk, yorkshiretea.co.uk). Update the `affiliateLink` field in `server/storage.ts` to add affiliate tracking.
 
 ## Design System
 British-inspired theme with:
