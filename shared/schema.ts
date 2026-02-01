@@ -33,6 +33,8 @@ export const drinks = pgTable("drinks", {
   affiliateLink: text("affiliate_link").notNull(), // Company website URL
   description: text("description").notNull(),
   imageUrl: text("image_url"), // Path to drink image
+  awards: text("awards"), // Award names, e.g., "CAMRA Champion Beer", "IWSC Gold"
+  reviewLink: text("review_link"), // Link to reviews on popular sites like Untappd, Vivino, etc.
 });
 
 export const insertDrinkSchema = createInsertSchema(drinks).omit({
@@ -60,6 +62,8 @@ export const pairingResultSchema = z.object({
       affiliateLink: z.string(),
       description: z.string(),
       imageUrl: z.string().nullable().optional(),
+      awards: z.string().nullable().optional(),
+      reviewLink: z.string().nullable().optional(),
     }),
     explanation: z.string(),
     matchScore: z.number(),
