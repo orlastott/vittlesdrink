@@ -98,7 +98,11 @@ export default function Home() {
               <span className="text-amber-400 block mt-2">British Drink Pairing</span>
             </h1>
             <p className="text-gray-200 text-lg md:text-xl max-w-xl mx-auto drop-shadow">
-              Match your meal with the finest British ales, ciders, gins, whiskies, and more.
+              Match your meal with the finest British & Irish drinks - ales, ciders, gins, whiskies, and more.
+            </p>
+            <p className="text-green-400 text-sm font-medium flex items-center justify-center gap-2 drop-shadow">
+              <Leaf className="h-4 w-4" />
+              Non-alcoholic options always included
             </p>
           </div>
 

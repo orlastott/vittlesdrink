@@ -91,19 +91,19 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
     return { drink, score };
   };
   
-  // Score and sort alcoholic drinks, take top 2
+  // Score and sort alcoholic drinks, take top 4
   const topAlcoholic = alcoholicDrinks
+    .map(scoreDrink)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
+  
+  // Score and sort non-alcoholic drinks, take top 2
+  const topNonAlcoholic = nonAlcoholicDrinks
     .map(scoreDrink)
     .sort((a, b) => b.score - a.score)
     .slice(0, 2);
   
-  // Score and sort non-alcoholic drinks, take top 1
-  const topNonAlcoholic = nonAlcoholicDrinks
-    .map(scoreDrink)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 1);
-  
-  // Combine: 2 alcoholic + 1 non-alcoholic
+  // Combine: 4 alcoholic + 2 non-alcoholic = 5-6 drinks
   const allPairings = [...topAlcoholic, ...topNonAlcoholic]
     .sort((a, b) => b.score - a.score);
   
@@ -116,7 +116,7 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
   return {
     dish,
     dishAnalysis: {
-      flavourProfile: `A dish with character that pairs wonderfully with carefully selected British drinks - including local craft producers.`,
+      flavourProfile: `A dish with character that pairs wonderfully with carefully selected British and Irish drinks - including local craft producers.`,
       keyCharacteristics: ["flavourful", "balanced", "satisfying"],
     },
     pairings: allPairings.map((item, index) => ({
@@ -130,9 +130,12 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
         affiliateLink: item.drink.affiliateLink,
         description: item.drink.description,
         imageUrl: item.drink.imageUrl,
+        awards: item.drink.awards,
+        reviewLink: item.drink.reviewLink,
+        priceTier: item.drink.priceTier,
       },
       explanation: generateExplanation(item.drink, dish),
-      matchScore: Math.round(92 - index * 4),
+      matchScore: Math.round(92 - index * 3),
     })),
   };
 }
@@ -262,8 +265,9 @@ ${i + 1}. ${d.name} (${d.type})
 Please provide:
 1. A detailed flavour profile analysis of the dish (2-3 sentences covering: dominant flavours, fat/acid balance, cooking method effects, texture)
 2. 3-5 key flavour characteristics as single words or short phrases
-3. Select 2-3 BEST matching drinks from the database. REQUIREMENTS:
-   - Include a non-alcoholic option (0% ABV) if available in the list
+3. Select 5-6 BEST matching drinks from the database. REQUIREMENTS:
+   - ALWAYS include 1-2 non-alcoholic options (0% ABV) - highlight these clearly
+   - Include a mix of price tiers: at least one budget/everyday option and one premium option
    - Prioritise micro-breweries and local producers when the flavour match is strong
    - Include at least one unexpected/creative pairing that works on flavour principles
 4. For each drink, explain WHY it pairs well - reference SPECIFIC flavour notes from both the dish AND the drink. Be educational!
@@ -307,7 +311,7 @@ Use the exact drink IDs from the database (1-indexed from the list). Return vali
       }
 
       // Map the AI response to our pairing result format
-      const pairings = parsed.selectedDrinkIds
+      let pairings = parsed.selectedDrinkIds
         .map((listIndex: number) => {
           const drink = allDrinks[listIndex - 1]; // Convert 1-indexed to 0-indexed
           if (!drink) return null;
@@ -324,14 +328,45 @@ Use the exact drink IDs from the database (1-indexed from the list). Return vali
               affiliateLink: drink.affiliateLink,
               description: drink.description,
               imageUrl: drink.imageUrl,
+              awards: drink.awards,
+              reviewLink: drink.reviewLink,
+              priceTier: drink.priceTier,
             },
-            explanation: pairingInfo?.explanation || "A great British pairing for your dish!",
+            explanation: pairingInfo?.explanation || "A great British and Irish pairing for your dish!",
             matchScore: pairingInfo?.matchScore || 80,
           };
         })
         .filter(Boolean)
         .sort((a: any, b: any) => b.matchScore - a.matchScore)
-        .slice(0, 3);
+        .slice(0, 6);
+
+      // Ensure at least one non-alcoholic option is included
+      const hasNonAlcoholic = pairings.some((p: any) => p.drink.abv === "0%");
+      if (!hasNonAlcoholic) {
+        const nonAlcoholicDrinks = allDrinks.filter(d => d.abv === "0%");
+        if (nonAlcoholicDrinks.length > 0) {
+          // Add top non-alcoholic drink
+          const nonAlcDrink = nonAlcoholicDrinks[0];
+          pairings.push({
+            drink: {
+              id: nonAlcDrink.id,
+              name: nonAlcDrink.name,
+              type: nonAlcDrink.type,
+              flavourNotes: nonAlcDrink.flavourNotes,
+              region: nonAlcDrink.region,
+              abv: nonAlcDrink.abv,
+              affiliateLink: nonAlcDrink.affiliateLink,
+              description: nonAlcDrink.description,
+              imageUrl: nonAlcDrink.imageUrl,
+              awards: nonAlcDrink.awards,
+              reviewLink: nonAlcDrink.reviewLink,
+              priceTier: nonAlcDrink.priceTier,
+            },
+            explanation: `${nonAlcDrink.name} offers a refreshing alcohol-free alternative that complements the dish beautifully.`,
+            matchScore: 75,
+          });
+        }
+      }
 
       const result: PairingResult = {
         dish,

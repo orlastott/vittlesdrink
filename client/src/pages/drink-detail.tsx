@@ -203,9 +203,24 @@ export default function DrinkDetail() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="italic text-muted-foreground">{drink.flavourNotes}</p>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Percent className="h-4 w-4 text-accent" />
-                      <span><strong>{drink.abv}</strong> ABV</span>
+                    <div className="flex flex-wrap items-center gap-4 text-sm">
+                      <div className="flex items-center gap-2">
+                        <Percent className="h-4 w-4 text-accent" />
+                        <span><strong>{drink.abv}</strong> ABV</span>
+                      </div>
+                      {drink.priceTier && (
+                        <span className={`px-3 py-1 rounded-md text-sm font-medium ${
+                          drink.priceTier === 'budget' ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' :
+                          drink.priceTier === 'everyday' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' :
+                          drink.priceTier === 'premium' ? 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' :
+                          'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                        }`} data-testid="price-tier-detail">
+                          {drink.priceTier === 'budget' ? 'Budget-Friendly' :
+                           drink.priceTier === 'everyday' ? 'Everyday' :
+                           drink.priceTier === 'premium' ? 'Premium' :
+                           'Luxury'}
+                        </span>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

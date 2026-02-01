@@ -217,6 +217,19 @@ export default function Results() {
                             <Percent className="h-4 w-4" />
                             {pairing.drink.abv} ABV
                           </span>
+                          {pairing.drink.priceTier && (
+                            <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                              pairing.drink.priceTier === 'budget' ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300' :
+                              pairing.drink.priceTier === 'everyday' ? 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' :
+                              pairing.drink.priceTier === 'premium' ? 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' :
+                              'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                            }`} data-testid={`price-tier-${pairing.drink.id}`}>
+                              {pairing.drink.priceTier === 'budget' ? 'Budget-Friendly' :
+                               pairing.drink.priceTier === 'everyday' ? 'Everyday' :
+                               pairing.drink.priceTier === 'premium' ? 'Premium' :
+                               'Luxury'}
+                            </span>
+                          )}
                         </div>
 
                         <p className="text-sm text-muted-foreground italic">

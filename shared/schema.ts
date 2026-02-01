@@ -27,7 +27,7 @@ export const drinks = pgTable("drinks", {
   name: text("name").notNull(),
   type: text("type").notNull(), // beer, ale, cider, gin, whisky, rum, wine
   flavourNotes: text("flavour_notes").notNull(),
-  region: text("region").notNull(), // UK region
+  region: text("region").notNull(), // UK/Ireland region
   abv: text("abv").notNull(), // Alcohol by volume
   recommendedFoods: text("recommended_foods").notNull(), // Comma-separated food types
   affiliateLink: text("affiliate_link").notNull(), // Company website URL
@@ -35,6 +35,7 @@ export const drinks = pgTable("drinks", {
   imageUrl: text("image_url"), // Path to drink image
   awards: text("awards"), // Award names, e.g., "CAMRA Champion Beer", "IWSC Gold"
   reviewLink: text("review_link"), // Link to reviews on popular sites like Untappd, Vivino, etc.
+  priceTier: text("price_tier"), // "budget", "everyday", "premium", "luxury"
 });
 
 export const insertDrinkSchema = createInsertSchema(drinks).omit({
@@ -64,6 +65,7 @@ export const pairingResultSchema = z.object({
       imageUrl: z.string().nullable().optional(),
       awards: z.string().nullable().optional(),
       reviewLink: z.string().nullable().optional(),
+      priceTier: z.string().nullable().optional(),
     }),
     explanation: z.string(),
     matchScore: z.number(),

@@ -9,14 +9,17 @@ MVP complete with:
 - AI-powered pairing results page with sophisticated flavour analysis
 - Drink detail pages with producer website links
 - Blog placeholder page
-- 31 seeded British drinks (24 alcoholic + 7 non-alcoholic) in database
-- Champions micro-breweries and local craft producers
-- At least 1 non-alcoholic option always included in pairings
+- 47 seeded British & Irish drinks (36 alcoholic + 11 non-alcoholic) in database
+- Champions micro-breweries and local craft producers (includes BrewDog, Guinness, Jameson, etc.)
+- At least 1 non-alcoholic option always included in pairings (guaranteed)
+- Returns 5-6 drink recommendations per search
 - Enhanced fallback pairing with flavour keyword matching
 - No stock imagery (imageUrl: null) to avoid misrepresentation
 - Award badges highlighting award-winning drinks (CAMRA, IWSC, Great Taste Awards, etc.)
 - "See Reviews" buttons linking to external review sites (Untappd, Vivino, Whiskybase, Difford's Guide)
 - Drink type filters on homepage (Beer & Ale, Cider, Wine, Spirits, Soft Drinks) - optional multi-select
+- Price tier badges: Budget-Friendly, Everyday, Premium, Luxury
+- "Non-alcoholic options always included" message on homepage
 
 ## Tech Stack
 - **Frontend**: React + TypeScript, Tailwind CSS, Shadcn/UI components, Wouter routing, TanStack Query
