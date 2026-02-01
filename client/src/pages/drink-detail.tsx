@@ -125,8 +125,19 @@ export default function DrinkDetail() {
 
           {drink && (
             <div className="space-y-8">
-              <div className="flex flex-col sm:flex-row items-start gap-6">
-                <DrinkIcon type={drink.type} />
+              <div className="flex flex-col md:flex-row items-start gap-6">
+                {drink.imageUrl ? (
+                  <div className="w-full md:w-64 h-48 md:h-64 flex-shrink-0 rounded-lg overflow-hidden">
+                    <img
+                      src={drink.imageUrl}
+                      alt={drink.name}
+                      className="w-full h-full object-cover"
+                      data-testid={`img-drink-detail-${drink.id}`}
+                    />
+                  </div>
+                ) : (
+                  <DrinkIcon type={drink.type} />
+                )}
                 <div className="flex-1">
                   <div className="flex items-center gap-3 flex-wrap">
                     <h1 className="font-serif text-3xl md:text-4xl font-bold">
@@ -137,6 +148,19 @@ export default function DrinkDetail() {
                   <p className="text-lg text-muted-foreground mt-2">
                     {drink.description}
                   </p>
+                  <div className="mt-4">
+                    <a
+                      href={drink.affiliateLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-testid={`link-producer-${drink.id}`}
+                    >
+                      <Button variant="outline" className="gap-2">
+                        <ExternalLink className="h-4 w-4" />
+                        Visit Producer Website
+                      </Button>
+                    </a>
+                  </div>
                 </div>
               </div>
 

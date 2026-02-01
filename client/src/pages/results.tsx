@@ -150,66 +150,80 @@ export default function Results() {
               <h2 className="font-serif text-2xl font-bold mt-8 mb-4">Recommended Pairings</h2>
 
               {data.pairings.map((pairing, index) => (
-                <Card key={pairing.drink.id} className="hover-elevate transition-all">
-                  <CardHeader>
-                    <div className="flex items-start justify-between gap-4 flex-wrap">
-                      <div className="flex items-center gap-3">
-                        <DrinkIcon type={pairing.drink.type} />
-                        <div>
-                          <CardTitle className="text-xl">
-                            <Link
-                              href={`/drink/${pairing.drink.id}`}
-                              className="hover:text-accent transition-colors"
-                              data-testid={`link-drink-${pairing.drink.id}`}
-                            >
-                              {pairing.drink.name}
-                            </Link>
-                          </CardTitle>
-                          <CardDescription className="capitalize">{pairing.drink.type}</CardDescription>
-                        </div>
+                <Card key={pairing.drink.id} className="transition-all">
+                  <div className="flex flex-col md:flex-row">
+                    {pairing.drink.imageUrl && (
+                      <div className="md:w-48 h-48 md:h-auto flex-shrink-0 overflow-hidden">
+                        <img
+                          src={pairing.drink.imageUrl}
+                          alt={pairing.drink.name}
+                          className="w-full h-full object-cover"
+                          data-testid={`img-drink-${pairing.drink.id}`}
+                        />
                       </div>
-                      <Badge variant={index === 0 ? "default" : "secondary"}>
-                        {index === 0 ? "Best Match" : `Match #${index + 1}`}
-                      </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-foreground leading-relaxed">{pairing.explanation}</p>
+                    )}
+                    <div className="flex-1">
+                      <CardHeader>
+                        <div className="flex items-start justify-between gap-4 flex-wrap">
+                          <div className="flex items-center gap-3">
+                            <DrinkIcon type={pairing.drink.type} />
+                            <div>
+                              <CardTitle className="text-xl">
+                                <Link
+                                  href={`/drink/${pairing.drink.id}`}
+                                  className="hover:text-accent transition-colors"
+                                  data-testid={`link-drink-${pairing.drink.id}`}
+                                >
+                                  {pairing.drink.name}
+                                </Link>
+                              </CardTitle>
+                              <CardDescription className="capitalize">{pairing.drink.type}</CardDescription>
+                            </div>
+                          </div>
+                          <Badge variant={index === 0 ? "default" : "secondary"}>
+                            {index === 0 ? "Best Match" : `Match #${index + 1}`}
+                          </Badge>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <p className="text-foreground leading-relaxed">{pairing.explanation}</p>
 
-                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
-                        {pairing.drink.region}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Percent className="h-4 w-4" />
-                        {pairing.drink.abv} ABV
-                      </span>
-                    </div>
+                        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {pairing.drink.region}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Percent className="h-4 w-4" />
+                            {pairing.drink.abv} ABV
+                          </span>
+                        </div>
 
-                    <p className="text-sm text-muted-foreground italic">
-                      Flavour notes: {pairing.drink.flavourNotes}
-                    </p>
+                        <p className="text-sm text-muted-foreground italic">
+                          Flavour notes: {pairing.drink.flavourNotes}
+                        </p>
 
-                    <div className="flex flex-wrap gap-3 pt-2">
-                      <a
-                        href={pairing.drink.affiliateLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-testid={`button-buy-${pairing.drink.id}`}
-                      >
-                        <Button className="gap-2">
-                          Buy Now
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                      </a>
-                      <Link href={`/drink/${pairing.drink.id}`}>
-                        <Button variant="outline" data-testid={`button-details-${pairing.drink.id}`}>
-                          View Details
-                        </Button>
-                      </Link>
+                        <div className="flex flex-wrap gap-3 pt-2">
+                          <a
+                            href={pairing.drink.affiliateLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-testid={`button-buy-${pairing.drink.id}`}
+                          >
+                            <Button className="gap-2">
+                              Visit Producer
+                              <ExternalLink className="h-4 w-4" />
+                            </Button>
+                          </a>
+                          <Link href={`/drink/${pairing.drink.id}`}>
+                            <Button variant="outline" data-testid={`button-details-${pairing.drink.id}`}>
+                              View Details
+                            </Button>
+                          </Link>
+                        </div>
+                      </CardContent>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               ))}
             </div>
