@@ -180,9 +180,16 @@ export default function Results() {
                               <CardDescription className="capitalize">{pairing.drink.type}</CardDescription>
                             </div>
                           </div>
-                          <Badge variant={index === 0 ? "default" : "secondary"}>
-                            {index === 0 ? "Best Match" : `Match #${index + 1}`}
-                          </Badge>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {pairing.drink.abv === "0%" && (
+                              <Badge variant="outline" className="text-green-600 border-green-600" data-testid={`badge-nonalcoholic-${pairing.drink.id}`}>
+                                Non-alcoholic
+                              </Badge>
+                            )}
+                            <Badge variant={index === 0 ? "default" : "secondary"}>
+                              {index === 0 ? "Best Match" : `Match #${index + 1}`}
+                            </Badge>
+                          </div>
                         </div>
                       </CardHeader>
                       <CardContent className="space-y-4">

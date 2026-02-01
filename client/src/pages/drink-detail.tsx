@@ -144,6 +144,11 @@ export default function DrinkDetail() {
                       {drink.name}
                     </h1>
                     <Badge className="capitalize">{drink.type}</Badge>
+                    {drink.abv === "0%" && (
+                      <Badge variant="outline" className="text-green-600 border-green-600" data-testid="badge-nonalcoholic-detail">
+                        Non-alcoholic
+                      </Badge>
+                    )}
                   </div>
                   <p className="text-lg text-muted-foreground mt-2">
                     {drink.description}

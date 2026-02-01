@@ -13,11 +13,14 @@ const openai = new OpenAI({
 function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
   const dishLower = dish.toLowerCase();
   
-  // Score each drink based on keyword matching
-  const scoredDrinks = allDrinks.map((drink) => {
+  // Separate alcoholic and non-alcoholic drinks
+  const alcoholicDrinks = allDrinks.filter(d => d.abv !== '0%');
+  const nonAlcoholicDrinks = allDrinks.filter(d => d.abv === '0%');
+  
+  // Score function for drinks
+  const scoreDrink = (drink: Drink) => {
     let score = 0;
     const recommendedFoods = drink.recommendedFoods.toLowerCase();
-    const flavourNotes = drink.flavourNotes.toLowerCase();
     
     // Check if dish matches any recommended foods
     const foodKeywords = recommendedFoods.split(',').map(f => f.trim());
@@ -27,34 +30,47 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
       }
     }
     
-    // Common food-drink pairings
+    // Common food-drink pairings for alcoholic drinks
     if (dishLower.includes('fish') && (drink.type === 'ale' || drink.type === 'wine')) score += 20;
     if (dishLower.includes('beef') && (drink.type === 'ale' || drink.type === 'whisky')) score += 20;
     if (dishLower.includes('chicken') && (drink.type === 'cider' || drink.type === 'wine')) score += 20;
     if (dishLower.includes('pork') && drink.type === 'cider') score += 25;
-    if (dishLower.includes('curry') && (drink.type === 'ale' || drink.type === 'rum')) score += 20;
+    if (dishLower.includes('curry') && (drink.type === 'ale' || drink.type === 'rum' || drink.type === 'soft drink')) score += 20;
     if (dishLower.includes('cheese') && (drink.type === 'cider' || drink.type === 'ale')) score += 20;
     if (dishLower.includes('pie') && drink.type === 'ale') score += 25;
-    if (dishLower.includes('roast') && drink.type === 'ale') score += 25;
+    if (dishLower.includes('roast') && (drink.type === 'ale' || drink.type === 'tea')) score += 25;
+    if (dishLower.includes('breakfast') && drink.type === 'tea') score += 30;
+    if (dishLower.includes('spicy') && drink.type === 'soft drink') score += 25;
     
     // Add some randomness with base score
     score += Math.random() * 10;
     
     return { drink, score };
-  });
+  };
   
-  // Sort by score and take top 3
-  const topDrinks = scoredDrinks
+  // Score and sort alcoholic drinks, take top 2
+  const topAlcoholic = alcoholicDrinks
+    .map(scoreDrink)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
+    .slice(0, 2);
+  
+  // Score and sort non-alcoholic drinks, take top 1
+  const topNonAlcoholic = nonAlcoholicDrinks
+    .map(scoreDrink)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 1);
+  
+  // Combine: 2 alcoholic + 1 non-alcoholic (or adjust if not enough of either)
+  const allPairings = [...topAlcoholic, ...topNonAlcoholic]
+    .sort((a, b) => b.score - a.score);
   
   return {
     dish,
     dishAnalysis: {
-      flavourProfile: `A delicious dish that pairs wonderfully with British drinks.`,
+      flavourProfile: `A delicious dish that pairs wonderfully with British drinks - both alcoholic and non-alcoholic options available.`,
       keyCharacteristics: ["savoury", "hearty", "traditional"],
     },
-    pairings: topDrinks.map((item, index) => ({
+    pairings: allPairings.map((item, index) => ({
       drink: {
         id: item.drink.id,
         name: item.drink.name,
@@ -123,7 +139,7 @@ export async function registerRoutes(
       }
 
       // Use AI to analyze the dish and find pairings
-      const systemPrompt = `You are an expert sommelier and food pairing specialist focusing exclusively on British alcoholic drinks.
+      const systemPrompt = `You are an expert sommelier and food pairing specialist focusing on British drinks - both alcoholic and non-alcoholic.
 Your task is to analyze a dish and recommend the best British drink pairings from a provided database.
 
 IMPORTANT GUIDELINES:
@@ -132,7 +148,9 @@ IMPORTANT GUIDELINES:
 - Match intensity of flavours between food and drink
 - Be fun, friendly, and engaging in your explanations
 - Keep explanations concise but informative (2-3 sentences)
-- Use British English spelling`;
+- Use British English spelling
+- ALWAYS include at least one non-alcoholic option (tea, soft drink) in your recommendations
+- Drinks with 0% ABV are non-alcoholic`;
 
       const userPrompt = `Dish to analyze: "${dish}"
 
@@ -148,7 +166,7 @@ ${i + 1}. ${d.name} (${d.type})
 Please provide:
 1. A flavour profile analysis of the dish (2-3 sentences describing key flavours and characteristics)
 2. 3-5 key characteristics as single words or short phrases
-3. Select the 1-3 BEST matching drinks from the database above
+3. Select 2-3 BEST matching drinks from the database above. IMPORTANT: At least ONE must be non-alcoholic (0% ABV) such as tea or soft drink.
 4. For each selected drink, provide a fun, engaging explanation (2-3 sentences) of why it pairs well
 5. A match score from 1-100 for each pairing
 
