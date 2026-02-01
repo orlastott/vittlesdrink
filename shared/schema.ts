@@ -30,8 +30,9 @@ export const drinks = pgTable("drinks", {
   region: text("region").notNull(), // UK region
   abv: text("abv").notNull(), // Alcohol by volume
   recommendedFoods: text("recommended_foods").notNull(), // Comma-separated food types
-  affiliateLink: text("affiliate_link").notNull(), // Placeholder affiliate link - replace with real links later
+  affiliateLink: text("affiliate_link").notNull(), // Company website URL
   description: text("description").notNull(),
+  imageUrl: text("image_url"), // Path to drink image
 });
 
 export const insertDrinkSchema = createInsertSchema(drinks).omit({
@@ -58,6 +59,7 @@ export const pairingResultSchema = z.object({
       abv: z.string(),
       affiliateLink: z.string(),
       description: z.string(),
+      imageUrl: z.string().nullable().optional(),
     }),
     explanation: z.string(),
     matchScore: z.number(),
