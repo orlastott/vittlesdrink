@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Wine, ExternalLink, MapPin, Percent, Sparkles, Beer, GlassWater, Leaf, Cherry } from "lucide-react";
+import { ArrowLeft, Wine, ExternalLink, MapPin, Percent, Sparkles, Beer, GlassWater, Leaf, Cherry, Award, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -181,6 +181,12 @@ export default function Results() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 flex-wrap">
+                            {pairing.drink.awards && (
+                              <Badge variant="outline" className="text-amber-600 border-amber-600 gap-1" data-testid={`badge-award-${pairing.drink.id}`}>
+                                <Award className="h-3 w-3" />
+                                Award Winner
+                              </Badge>
+                            )}
                             {pairing.drink.abv === "0%" && (
                               <Badge variant="outline" className="text-green-600 border-green-600" data-testid={`badge-nonalcoholic-${pairing.drink.id}`}>
                                 Non-alcoholic
@@ -210,6 +216,13 @@ export default function Results() {
                           Flavour notes: {pairing.drink.flavourNotes}
                         </p>
 
+                        {pairing.drink.awards && (
+                          <div className="flex items-center gap-2 text-sm bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 px-3 py-2 rounded-md" data-testid={`award-info-${pairing.drink.id}`}>
+                            <Star className="h-4 w-4 text-amber-500 fill-amber-500" />
+                            <span className="font-medium">{pairing.drink.awards}</span>
+                          </div>
+                        )}
+
                         <div className="flex flex-wrap gap-3 pt-2">
                           <a
                             href={pairing.drink.affiliateLink}
@@ -222,6 +235,19 @@ export default function Results() {
                               <ExternalLink className="h-4 w-4" />
                             </Button>
                           </a>
+                          {pairing.drink.reviewLink && (
+                            <a
+                              href={pairing.drink.reviewLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              data-testid={`button-reviews-${pairing.drink.id}`}
+                            >
+                              <Button variant="outline" className="gap-2">
+                                See Reviews
+                                <ExternalLink className="h-4 w-4" />
+                              </Button>
+                            </a>
+                          )}
                           <Link href={`/drink/${pairing.drink.id}`}>
                             <Button variant="outline" data-testid={`button-details-${pairing.drink.id}`}>
                               View Details

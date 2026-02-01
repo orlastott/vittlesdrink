@@ -1,6 +1,6 @@
 import { useParams, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Wine, ExternalLink, MapPin, Percent, Utensils, Beer, GlassWater, Leaf, Cherry } from "lucide-react";
+import { ArrowLeft, Wine, ExternalLink, MapPin, Percent, Utensils, Beer, GlassWater, Leaf, Cherry, Award, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -144,6 +144,12 @@ export default function DrinkDetail() {
                       {drink.name}
                     </h1>
                     <Badge className="capitalize">{drink.type}</Badge>
+                    {drink.awards && (
+                      <Badge variant="outline" className="text-amber-600 border-amber-600 gap-1" data-testid="badge-award-detail">
+                        <Award className="h-3 w-3" />
+                        Award Winner
+                      </Badge>
+                    )}
                     {drink.abv === "0%" && (
                       <Badge variant="outline" className="text-green-600 border-green-600" data-testid="badge-nonalcoholic-detail">
                         Non-alcoholic
@@ -153,7 +159,15 @@ export default function DrinkDetail() {
                   <p className="text-lg text-muted-foreground mt-2">
                     {drink.description}
                   </p>
-                  <div className="mt-4">
+                  
+                  {drink.awards && (
+                    <div className="flex items-center gap-2 mt-4 text-sm bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 px-4 py-3 rounded-md" data-testid="award-info-detail">
+                      <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
+                      <span className="font-medium">{drink.awards}</span>
+                    </div>
+                  )}
+                  
+                  <div className="mt-4 flex flex-wrap gap-3">
                     <a
                       href={drink.affiliateLink}
                       target="_blank"
@@ -165,6 +179,19 @@ export default function DrinkDetail() {
                         Visit Producer Website
                       </Button>
                     </a>
+                    {drink.reviewLink && (
+                      <a
+                        href={drink.reviewLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-testid={`link-reviews-${drink.id}`}
+                      >
+                        <Button variant="outline" className="gap-2">
+                          <Star className="h-4 w-4" />
+                          See Reviews
+                        </Button>
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
