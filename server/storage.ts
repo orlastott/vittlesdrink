@@ -60,6 +60,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.timothytaylor.co.uk",
     description: "A classic Yorkshire pale ale, winner of multiple CAMRA awards. Known for its perfect balance of hop bitterness and malt sweetness.",
     imageUrl: null,
+    awards: "CAMRA Champion Beer of Britain (4x winner)",
+    reviewLink: "https://untappd.com/b/timothy-taylor-landlord/3815",
   },
   {
     name: "Fuller's London Pride",
@@ -71,6 +73,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.fullers.co.uk",
     description: "London's iconic amber ale with over 175 years of brewing heritage. A perfectly balanced pint with distinctive marmalade notes.",
     imageUrl: null,
+    awards: "CAMRA Champion Best Bitter",
+    reviewLink: "https://untappd.com/b/fuller-s-london-pride/5765",
   },
   {
     name: "Aspall Suffolk Cyder",
@@ -82,6 +86,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.aspall.co.uk",
     description: "A premium English cider crafted in Suffolk since 1728. Made from a blend of bittersweet and culinary apples.",
     imageUrl: null,
+    awards: "Great Taste Award",
+    reviewLink: "https://untappd.com/b/aspall-aspall-suffolk-cyder/11899",
   },
   {
     name: "Sipsmith London Dry Gin",
@@ -93,6 +99,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.sipsmith.com",
     description: "Handcrafted in London's first copper pot still for nearly 200 years. A perfectly balanced London Dry Gin.",
     imageUrl: null,
+    awards: "IWSC Gold Medal",
+    reviewLink: "https://www.diffordsguide.com/beer-wines-spirits/3853/sipsmith-london-dry-gin",
   },
   {
     name: "Glenfiddich 12 Year Old",
@@ -104,6 +112,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.glenfiddich.com",
     description: "The world's most awarded single malt Scotch whisky. Matured in American and European oak casks.",
     imageUrl: null,
+    awards: "World's Most Awarded Single Malt",
+    reviewLink: "https://www.whiskybase.com/whiskies/whisky/1164/glenfiddich-12-year-old",
   },
   {
     name: "Laphroaig 10 Year Old",
@@ -115,6 +125,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.laphroaig.com",
     description: "A bold, smoky Islay single malt. The most richly flavoured of all Scotch whiskies.",
     imageUrl: null,
+    awards: "World Whiskies Awards Gold",
+    reviewLink: "https://www.whiskybase.com/whiskies/whisky/2893/laphroaig-10-year-old",
   },
   {
     name: "Westons Vintage Cider",
@@ -126,6 +138,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.westons-cider.co.uk",
     description: "A premium oak-aged cider from Herefordshire's finest apples. Aged for two years for exceptional depth.",
     imageUrl: null,
+    awards: "International Cider Challenge Gold",
+    reviewLink: "https://untappd.com/b/westons-cider-vintage/24890",
   },
   {
     name: "Pusser's British Navy Rum",
@@ -137,6 +151,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.pussersrum.com",
     description: "The original British Royal Navy rum, blended to the Admiralty's specifications since 1655.",
     imageUrl: null,
+    awards: null,
+    reviewLink: "https://www.diffordsguide.com/beer-wines-spirits/2915/pussers-blue-label-navy-rum",
   },
   {
     name: "Nyetimber Classic Cuvée",
@@ -148,6 +164,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.nyetimber.com",
     description: "England's finest sparkling wine, rivalling the best Champagnes. Grown on the chalk downs of Sussex.",
     imageUrl: null,
+    awards: "Decanter World Wine Awards Gold",
+    reviewLink: "https://www.vivino.com/nyetimber-classic-cuvee/w/22925",
   },
   {
     name: "Adnams Broadside",
@@ -159,6 +177,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.adnams.co.uk",
     description: "A dark, rich ruby ale from the Suffolk coast. Named after the 1672 Battle of Sole Bay.",
     imageUrl: null,
+    awards: "World Beer Awards Gold",
+    reviewLink: "https://untappd.com/b/adnams-broadside/5697",
   },
   {
     name: "Cotswolds Dry Gin",
@@ -170,6 +190,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.cotswoldsdistillery.com",
     description: "An aromatic gin distilled with nine carefully considered botanicals from the heart of the Cotswolds.",
     imageUrl: null,
+    awards: "San Francisco World Spirits Gold",
+    reviewLink: "https://www.diffordsguide.com/beer-wines-spirits/4973/cotswolds-dry-gin",
   },
   {
     name: "Chapel Down Bacchus",
@@ -181,6 +203,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.chapeldown.com",
     description: "England's signature white grape, producing wines with distinctive aromatic character.",
     imageUrl: null,
+    awards: "IWC Silver Medal",
+    reviewLink: "https://www.vivino.com/chapel-down-bacchus/w/30858",
   },
   {
     name: "Black Sheep Best Bitter",
@@ -192,6 +216,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.blacksheepbrewery.co.uk",
     description: "A traditional Yorkshire bitter brewed in Masham using the Yorkshire Square fermentation system.",
     imageUrl: null,
+    awards: "SIBA Gold Medal",
+    reviewLink: "https://untappd.com/b/black-sheep-brewery-best-bitter/9099",
   },
   {
     name: "Thatchers Gold",
@@ -203,6 +229,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.thatcherscider.co.uk",
     description: "A refreshing medium-dry Somerset cider made from a blend of British apples.",
     imageUrl: null,
+    awards: "Great Taste Award 3 Stars",
+    reviewLink: "https://untappd.com/b/thatchers-cider-gold/12066",
   },
   {
     name: "Hendrick's Gin",
@@ -214,6 +242,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.hendricksgin.com",
     description: "A distinctively delicious gin made with curious, yet perfectly balanced infusions of cucumber and rose.",
     imageUrl: null,
+    awards: "IWSC Gold Outstanding",
+    reviewLink: "https://www.diffordsguide.com/beer-wines-spirits/2491/hendricks-gin",
   },
   // ============================================
   // MICRO-BREWERIES & LOCAL PRODUCERS
@@ -228,6 +258,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.weetwoodales.co.uk",
     description: "A perfectly balanced blonde ale from Weetwood Ales, a family-run Cheshire micro-brewery. Smooth, refreshing and wonderfully drinkable.",
     imageUrl: null,
+    awards: "SIBA Regional Gold",
+    reviewLink: "https://untappd.com/b/weetwood-ales-cheshire-cat/22748",
   },
   {
     name: "Weetwood Eastgate Ale",
@@ -239,6 +271,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.weetwoodales.co.uk",
     description: "A traditional amber ale crafted in the heart of Cheshire. Named after Chester's famous Eastgate Clock.",
     imageUrl: null,
+    awards: null,
+    reviewLink: "https://untappd.com/b/weetwood-ales-eastgate-ale/156891",
   },
   {
     name: "Thornbridge Jaipur",
@@ -250,6 +284,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.thornbridgebrewery.co.uk",
     description: "Multi-award winning IPA from Thornbridge. Bold, citrusy and endlessly refreshing - one of Britain's finest craft beers.",
     imageUrl: null,
+    awards: "World Beer Awards Champion IPA",
+    reviewLink: "https://untappd.com/b/thornbridge-brewery-jaipur/5772",
   },
   {
     name: "Hawkshead Windermere Pale",
@@ -261,6 +297,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.hawksheadbrewery.co.uk",
     description: "A sessionable pale ale from the Lake District's award-winning Hawkshead Brewery. Light, zesty and perfect for any occasion.",
     imageUrl: null,
+    awards: "SIBA North West Gold",
+    reviewLink: "https://untappd.com/b/hawkshead-brewery-windermere-pale/13651",
   },
   {
     name: "Tiny Rebel Cwtch",
@@ -272,6 +310,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.tinyrebel.co.uk",
     description: "Champion Beer of Britain winner. 'Cwtch' means cuddle in Welsh - a comforting red ale with a hoppy twist.",
     imageUrl: null,
+    awards: "CAMRA Champion Beer of Britain",
+    reviewLink: "https://untappd.com/b/tiny-rebel-cwtch/356453",
   },
   {
     name: "Siren Craft Brew Soundwave",
@@ -283,6 +323,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.sirencraftbrew.com",
     description: "A modern West Coast IPA from one of the UK's most innovative breweries. Bold, aromatic and utterly moreish.",
     imageUrl: null,
+    awards: "Ratebeer Top 50 UK Brewers",
+    reviewLink: "https://untappd.com/b/siren-craft-brew-soundwave/406842",
   },
   {
     name: "Burning Sky Plateau",
@@ -294,6 +336,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.burningskybeer.com",
     description: "An elegant session pale from Sussex's acclaimed Burning Sky. Delicate yet flavourful, perfect for contemplative drinking.",
     imageUrl: null,
+    awards: "Ratebeer Best UK Brewer",
+    reviewLink: "https://untappd.com/b/burning-sky-plateau/744389",
   },
   {
     name: "Beavertown Neck Oil",
@@ -305,6 +349,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.beavertownbrewery.co.uk",
     description: "London's iconic session IPA. Packed with New World hops yet dangerously drinkable.",
     imageUrl: null,
+    awards: "World Beer Awards Bronze",
+    reviewLink: "https://untappd.com/b/beavertown-brewery-neck-oil/494694",
   },
   {
     name: "Wild Beer Co Bibble",
@@ -316,6 +362,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.wildbeerco.com",
     description: "A bright, juicy pale ale from Wild Beer's Somerset farmhouse brewery. Vibrant hops meet farmhouse soul.",
     imageUrl: null,
+    awards: "Great Taste Award",
+    reviewLink: "https://untappd.com/b/wild-beer-co-bibble/582393",
   },
   // ============================================
   // NON-ALCOHOLIC BRITISH DRINKS
@@ -330,6 +378,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.yorkshiretea.co.uk",
     description: "Britain's favourite tea brand, known for its proper brew strength and comforting character. A cup of Yorkshire is never just a cup of tea.",
     imageUrl: null,
+    awards: "Great Taste Award 3 Stars",
+    reviewLink: null,
   },
   {
     name: "Fentimans Ginger Beer",
@@ -341,6 +391,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.fentimans.com",
     description: "Botanically brewed using a time-honoured recipe since 1905. Made with real ginger root for authentic heat and flavour.",
     imageUrl: null,
+    awards: "Great Taste Award Gold",
+    reviewLink: null,
   },
   {
     name: "Belvoir Elderflower Pressé",
@@ -352,6 +404,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.belvoirfarm.co.uk",
     description: "Handcrafted on a Leicestershire farm using freshly picked elderflowers. A quintessentially English refreshment.",
     imageUrl: null,
+    awards: "Great Taste Award 3 Stars",
+    reviewLink: null,
   },
   {
     name: "Fever-Tree Tonic Water",
@@ -363,6 +417,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.fever-tree.com",
     description: "Premium tonic water made with the finest quinine from the Congo and natural botanicals. If 3/4 of your drink is the mixer, make it the best.",
     imageUrl: null,
+    awards: "Queen's Award for Enterprise",
+    reviewLink: null,
   },
   {
     name: "Twinings English Breakfast",
@@ -374,6 +430,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.twinings.co.uk",
     description: "A classic British blend since 1706 from the world's oldest tea company. The perfect accompaniment to a hearty British breakfast.",
     imageUrl: null,
+    awards: "Royal Warrant Holder",
+    reviewLink: null,
   },
   {
     name: "Fentimans Curiosity Cola",
@@ -385,6 +443,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.fentimans.com",
     description: "A botanically brewed cola made with natural plant extracts. Complex, grown-up and utterly delicious.",
     imageUrl: null,
+    awards: "Great Taste Award",
+    reviewLink: null,
   },
   {
     name: "Luscombe Sicilian Lemonade",
@@ -396,6 +456,8 @@ export const seedDrinks: InsertDrink[] = [
     affiliateLink: "https://www.luscombe.co.uk",
     description: "Organic lemonade made with Sicilian lemons and pure Dartmoor spring water. Simple, honest refreshment from Devon.",
     imageUrl: null,
+    awards: "Soil Association Organic Certified",
+    reviewLink: null,
   },
 ];
 
