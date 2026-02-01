@@ -9,6 +9,28 @@ const openai = new OpenAI({
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
 });
 
+// Flavour keyword mappings for sophisticated pairing
+const flavourPairings: Record<string, string[]> = {
+  // Dish keywords -> drink flavour keywords that complement
+  'beef': ['malt', 'caramel', 'rich', 'roast', 'oak', 'robust'],
+  'steak': ['malt', 'oak', 'whisky', 'bold', 'rich'],
+  'lamb': ['spice', 'fruit', 'caramel', 'warm', 'herbs'],
+  'pork': ['apple', 'crisp', 'dry', 'refreshing', 'cider'],
+  'chicken': ['citrus', 'light', 'crisp', 'floral', 'refreshing'],
+  'fish': ['citrus', 'crisp', 'mineral', 'light', 'elderflower', 'lemon'],
+  'seafood': ['mineral', 'citrus', 'crisp', 'brioche', 'sparkling'],
+  'curry': ['ginger', 'spice', 'tropical', 'hoppy', 'cooling'],
+  'spicy': ['ginger', 'cooling', 'refreshing', 'citrus', 'tropical'],
+  'cheese': ['malt', 'fruit', 'bitter', 'apple', 'complex'],
+  'roast': ['malt', 'robust', 'caramel', 'warming', 'rich'],
+  'pie': ['malt', 'bitter', 'caramel', 'robust', 'traditional'],
+  'salad': ['citrus', 'light', 'floral', 'refreshing', 'crisp'],
+  'breakfast': ['malty', 'robust', 'bold', 'comforting', 'rich'],
+  'dessert': ['sweet', 'vanilla', 'butterscotch', 'honey', 'fruit'],
+  'chocolate': ['vanilla', 'butterscotch', 'molasses', 'rich', 'warming'],
+  'cream': ['elderflower', 'delicate', 'honey', 'light', 'floral'],
+};
+
 // Fallback function for deterministic pairing when AI fails
 function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
   const dishLower = dish.toLowerCase();
@@ -17,33 +39,54 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
   const alcoholicDrinks = allDrinks.filter(d => d.abv !== '0%');
   const nonAlcoholicDrinks = allDrinks.filter(d => d.abv === '0%');
   
-  // Score function for drinks
+  // Find relevant flavour keywords based on dish
+  const relevantFlavours: string[] = [];
+  for (const [keyword, flavours] of Object.entries(flavourPairings)) {
+    if (dishLower.includes(keyword)) {
+      relevantFlavours.push(...flavours);
+    }
+  }
+  
+  // Score function for drinks based on flavour matching
   const scoreDrink = (drink: Drink) => {
     let score = 0;
     const recommendedFoods = drink.recommendedFoods.toLowerCase();
+    const flavourNotes = drink.flavourNotes.toLowerCase();
+    const description = drink.description.toLowerCase();
     
     // Check if dish matches any recommended foods
     const foodKeywords = recommendedFoods.split(',').map(f => f.trim());
     for (const keyword of foodKeywords) {
       if (dishLower.includes(keyword) || keyword.includes(dishLower.split(' ')[0])) {
-        score += 30;
+        score += 25;
       }
     }
     
-    // Common food-drink pairings for alcoholic drinks
-    if (dishLower.includes('fish') && (drink.type === 'ale' || drink.type === 'wine')) score += 20;
-    if (dishLower.includes('beef') && (drink.type === 'ale' || drink.type === 'whisky')) score += 20;
-    if (dishLower.includes('chicken') && (drink.type === 'cider' || drink.type === 'wine')) score += 20;
-    if (dishLower.includes('pork') && drink.type === 'cider') score += 25;
-    if (dishLower.includes('curry') && (drink.type === 'ale' || drink.type === 'rum' || drink.type === 'soft drink')) score += 20;
-    if (dishLower.includes('cheese') && (drink.type === 'cider' || drink.type === 'ale')) score += 20;
-    if (dishLower.includes('pie') && drink.type === 'ale') score += 25;
-    if (dishLower.includes('roast') && (drink.type === 'ale' || drink.type === 'tea')) score += 25;
-    if (dishLower.includes('breakfast') && drink.type === 'tea') score += 30;
-    if (dishLower.includes('spicy') && drink.type === 'soft drink') score += 25;
+    // Match flavour notes with relevant flavours
+    for (const flavour of relevantFlavours) {
+      if (flavourNotes.includes(flavour)) {
+        score += 15;
+      }
+    }
     
-    // Add some randomness with base score
-    score += Math.random() * 10;
+    // Boost micro-breweries and local producers
+    if (description.includes('micro') || description.includes('craft') || 
+        description.includes('independent') || description.includes('family')) {
+      score += 10;
+    }
+    
+    // Common food-drink pairings
+    if (dishLower.includes('beef') && (drink.type === 'ale' || drink.type === 'whisky')) score += 20;
+    if (dishLower.includes('fish') && (drink.type === 'wine' || flavourNotes.includes('citrus'))) score += 20;
+    if (dishLower.includes('pork') && drink.type === 'cider') score += 25;
+    if (dishLower.includes('curry') && flavourNotes.includes('ginger')) score += 25;
+    if (dishLower.includes('spicy') && flavourNotes.includes('ginger')) score += 25;
+    if (dishLower.includes('cheese') && (drink.type === 'cider' || drink.type === 'ale')) score += 20;
+    if (dishLower.includes('breakfast') && drink.type === 'tea') score += 30;
+    if (dishLower.includes('roast') && (drink.type === 'ale' || drink.type === 'tea')) score += 25;
+    
+    // Add small randomness
+    score += Math.random() * 5;
     
     return { drink, score };
   };
@@ -60,15 +103,21 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
     .sort((a, b) => b.score - a.score)
     .slice(0, 1);
   
-  // Combine: 2 alcoholic + 1 non-alcoholic (or adjust if not enough of either)
+  // Combine: 2 alcoholic + 1 non-alcoholic
   const allPairings = [...topAlcoholic, ...topNonAlcoholic]
     .sort((a, b) => b.score - a.score);
+  
+  // Generate flavour-based explanations
+  const generateExplanation = (drink: Drink, dishName: string) => {
+    const flavours = drink.flavourNotes.split(',')[0].trim().toLowerCase();
+    return `${drink.name} brings ${flavours} that beautifully ${drink.abv === '0%' ? 'refreshes' : 'complements'} the flavours in ${dishName}. A thoughtful British pairing from ${drink.region}.`;
+  };
   
   return {
     dish,
     dishAnalysis: {
-      flavourProfile: `A delicious dish that pairs wonderfully with British drinks - both alcoholic and non-alcoholic options available.`,
-      keyCharacteristics: ["savoury", "hearty", "traditional"],
+      flavourProfile: `A dish with character that pairs wonderfully with carefully selected British drinks - including local craft producers.`,
+      keyCharacteristics: ["flavourful", "balanced", "satisfying"],
     },
     pairings: allPairings.map((item, index) => ({
       drink: {
@@ -82,8 +131,8 @@ function getFallbackPairings(dish: string, allDrinks: Drink[]): PairingResult {
         description: item.drink.description,
         imageUrl: item.drink.imageUrl,
       },
-      explanation: `${item.drink.name} is a fantastic choice with its ${item.drink.flavourNotes.toLowerCase()}. A classic British pairing!`,
-      matchScore: Math.round(95 - index * 5),
+      explanation: generateExplanation(item.drink, dish),
+      matchScore: Math.round(92 - index * 4),
     })),
   };
 }
@@ -139,18 +188,29 @@ export async function registerRoutes(
       }
 
       // Use AI to analyze the dish and find pairings
-      const systemPrompt = `You are an expert sommelier and food pairing specialist focusing on British drinks - both alcoholic and non-alcoholic.
-Your task is to analyze a dish and recommend the best British drink pairings from a provided database.
+      const systemPrompt = `You are an expert sommelier and food pairing specialist with deep knowledge of British drinks - from craft micro-breweries to traditional producers.
+Your task is to analyze a dish's flavour profile and recommend THE BEST British drink pairings from the provided database.
 
-IMPORTANT GUIDELINES:
-- Base your pairing on flavour contrast/complement rules
-- Consider the dish's key flavours, textures, and cooking methods
-- Match intensity of flavours between food and drink
-- Be fun, friendly, and engaging in your explanations
-- Keep explanations concise but informative (2-3 sentences)
+FLAVOUR PAIRING PRINCIPLES:
+1. COMPLEMENTARY PAIRINGS: Match similar flavours (caramel malt with caramelised onions, citrus hops with lemon-dressed fish)
+2. CONTRASTING PAIRINGS: Balance opposites (bitter hops cutting through fatty meats, crisp acidity refreshing rich dishes)
+3. INTENSITY MATCHING: Bold dishes need bold drinks; delicate dishes need subtle drinks
+4. REGIONAL AFFINITY: Consider local pairings (Cheshire cheese with Cheshire ales, Welsh lamb with Welsh ale)
+5. UNEXPECTED DISCOVERIES: Suggest creative pairings that work on flavour principles but aren't obvious
+
+CHAMPION LOCAL PRODUCERS:
+- Prioritise micro-breweries and small independent producers when the flavour match is strong
+- Highlight what makes each producer special in your explanation
+- Help users discover hidden gems beyond mainstream options
+
+IMPORTANT RULES:
+- Analyse the dish's key flavour notes: fat content, acidity, sweetness, umami, spice level, cooking method
+- Match specific flavour notes in drinks to specific elements of the dish
+- Explain WHY the pairing works using flavour science
+- Be fun, engaging and educational - help people learn about pairing
 - Use British English spelling
-- ALWAYS include at least one non-alcoholic option (tea, soft drink) in your recommendations
-- Drinks with 0% ABV are non-alcoholic`;
+- ALWAYS include at least one non-alcoholic option (tea, soft drink) - 0% ABV drinks
+- Reference the drink's flavour notes specifically in your explanations`;
 
       const userPrompt = `Dish to analyze: "${dish}"
 
@@ -164,11 +224,14 @@ ${i + 1}. ${d.name} (${d.type})
 `).join('')}
 
 Please provide:
-1. A flavour profile analysis of the dish (2-3 sentences describing key flavours and characteristics)
-2. 3-5 key characteristics as single words or short phrases
-3. Select 2-3 BEST matching drinks from the database above. IMPORTANT: At least ONE must be non-alcoholic (0% ABV) such as tea or soft drink.
-4. For each selected drink, provide a fun, engaging explanation (2-3 sentences) of why it pairs well
-5. A match score from 1-100 for each pairing
+1. A detailed flavour profile analysis of the dish (2-3 sentences covering: dominant flavours, fat/acid balance, cooking method effects, texture)
+2. 3-5 key flavour characteristics as single words or short phrases
+3. Select 2-3 BEST matching drinks from the database. REQUIREMENTS:
+   - At least ONE must be non-alcoholic (0% ABV)
+   - Prioritise micro-breweries and local producers when the flavour match is strong
+   - Include at least one unexpected/creative pairing that works on flavour principles
+4. For each drink, explain WHY it pairs well - reference SPECIFIC flavour notes from both the dish AND the drink. Be educational!
+5. A match score from 1-100 for each pairing based on flavour harmony
 
 Respond in this exact JSON format:
 {
