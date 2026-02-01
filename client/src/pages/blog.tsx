@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Wine, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import vittlesLogo from "@/assets/ChatGPT_Image_Feb_1,_2026,_08_46_08_PM_1769978801593.png";
 
 export default function Blog() {
   return (
@@ -9,7 +10,12 @@ export default function Blog() {
       <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center" data-testid="link-home">
-            <span className="font-serif text-2xl font-bold tracking-wide">Vittles</span>
+            <img 
+              src={vittlesLogo} 
+              alt="Vittles" 
+              className="h-12 object-contain"
+              style={{ clipPath: 'inset(28% 18% 38% 18%)' }}
+            />
           </Link>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-sm font-medium hover:text-accent transition-colors" data-testid="link-nav-home">Home</Link>
