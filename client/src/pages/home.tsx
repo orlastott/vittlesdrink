@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Search, Wine, Beer, GlassWater } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { trendingDishes } from "@shared/schema";
+import cookingVideo from "@/assets/videos/cooking-hero.mp4";
+import drinksVideo from "@/assets/videos/drinks-hero.mp4";
 
 export default function Home() {
   const [dish, setDish] = useState("");
   const [, setLocation] = useLocation();
+  const [activeVideo, setActiveVideo] = useState(0);
+  const videos = [cookingVideo, drinksVideo];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveVideo((prev) => (prev + 1) % videos.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSearch = (searchDish: string) => {
     if (searchDish.trim()) {
@@ -36,19 +47,35 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">
-        <div className="max-w-3xl w-full text-center space-y-8">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden">
+        {videos.map((video, index) => (
+          <video
+            key={index}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+              activeVideo === index ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <source src={video} type="video/mp4" />
+          </video>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+        
+        <div className="max-w-3xl w-full text-center space-y-8 relative z-10">
           <div className="space-y-4">
             <div className="flex justify-center gap-3">
-              <Beer className="h-10 w-10 text-accent" />
-              <Wine className="h-10 w-10 text-primary" />
-              <GlassWater className="h-10 w-10 text-accent" />
+              <Beer className="h-10 w-10 text-amber-400" />
+              <Wine className="h-10 w-10 text-rose-400" />
+              <GlassWater className="h-10 w-10 text-amber-300" />
             </div>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
               Find Your Perfect
-              <span className="text-accent block mt-2">British Drink Pairing</span>
+              <span className="text-amber-400 block mt-2">British Drink Pairing</span>
             </h1>
-            <p className="text-muted-foreground text-lg md:text-xl max-w-xl mx-auto">
+            <p className="text-gray-200 text-lg md:text-xl max-w-xl mx-auto drop-shadow">
               Match your meal with the finest British ales, ciders, gins, whiskies, and more.
             </p>
           </div>
@@ -61,7 +88,7 @@ export default function Home() {
                 placeholder="What are you eating?"
                 value={dish}
                 onChange={(e) => setDish(e.target.value)}
-                className="pl-12 pr-24 h-14 text-lg rounded-md border-2 focus:border-accent"
+                className="pl-12 pr-24 h-14 text-lg rounded-md border-2 focus:border-accent bg-white/95"
                 data-testid="input-dish-search"
               />
               <Button
@@ -76,7 +103,7 @@ export default function Home() {
           </form>
 
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">
+            <p className="text-sm text-gray-300 uppercase tracking-wider font-medium drop-shadow">
               Trending Dishes
             </p>
             <div className="flex flex-wrap justify-center gap-2">
@@ -84,7 +111,7 @@ export default function Home() {
                 <Badge
                   key={trendingDish}
                   variant="secondary"
-                  className="cursor-pointer text-sm py-1.5 px-3"
+                  className="cursor-pointer text-sm py-1.5 px-3 bg-white/20 text-white border-white/30 backdrop-blur-sm"
                   onClick={() => handleSearch(trendingDish)}
                   data-testid={`badge-trending-${trendingDish.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
                 >
@@ -98,7 +125,7 @@ export default function Home() {
 
       <footer className="border-t bg-card/50">
         <div className="container mx-auto px-4 py-8 text-center text-sm text-muted-foreground">
-          <p>British Pairing - Discover the perfect drink for every dish.</p>
+          <p>Vittles - Discover the perfect drink for every dish.</p>
           <p className="mt-2">Drink responsibly. Must be 18+ to purchase alcohol.</p>
         </div>
       </footer>
