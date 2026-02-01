@@ -1,4 +1,4 @@
-# British Pairing - AI-Powered Food & Drink Matching App
+# Vittles - AI-Powered Food & Drink Matching App
 
 ## Overview
 A web application that helps users discover the perfect British alcoholic drink pairing for any dish. Uses AI (OpenAI) to analyze dish flavour profiles and recommend matching drinks from a curated database of British beverages.

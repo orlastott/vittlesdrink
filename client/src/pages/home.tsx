@@ -27,7 +27,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <a href="/" className="flex items-center gap-2" data-testid="link-home">
             <Wine className="h-6 w-6 text-accent" />
-            <span className="font-serif text-xl font-bold">British Pairing</span>
+            <span className="font-serif text-xl font-bold">Vittles</span>
           </a>
           <nav className="hidden md:flex items-center gap-6">
             <a href="/" className="text-sm font-medium hover:text-accent transition-colors" data-testid="link-nav-home">Home</a>

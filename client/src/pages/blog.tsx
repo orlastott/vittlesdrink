@@ -10,7 +10,7 @@ export default function Blog() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2" data-testid="link-home">
             <Wine className="h-6 w-6 text-accent" />
-            <span className="font-serif text-xl font-bold">British Pairing</span>
+            <span className="font-serif text-xl font-bold">Vittles</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-sm font-medium hover:text-accent transition-colors" data-testid="link-nav-home">Home</Link>
@@ -23,7 +23,7 @@ export default function Blog() {
         <div className="max-w-3xl mx-auto text-center">
           <BookOpen className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
           <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">
-            The British Pairing Blog
+            The Vittles Blog
           </h1>
           <p className="text-muted-foreground text-lg mb-8">
             Coming soon: Expert guides, tasting notes, and pairing tips from the world of British drinks.
@@ -91,7 +91,7 @@ export default function Blog() {
 
       <footer className="border-t bg-card/50 mt-auto">
         <div className="container mx-auto px-4 py-8 text-center text-sm text-muted-foreground">
-          <p>British Pairing - Discover the perfect drink for every dish.</p>
+          <p>Vittles - Discover the perfect drink for every dish.</p>
           <p className="mt-2">Drink responsibly. Must be 18+ to purchase alcohol.</p>
         </div>
       </footer>
