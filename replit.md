@@ -6,13 +6,14 @@ A web application that helps users discover the perfect British drink pairing fo
 ## Current State
 MVP complete with:
 - Homepage with search bar, trending dishes, and immersive video backgrounds
-- AI-powered pairing results page with drink images
+- AI-powered pairing results page with sophisticated flavour analysis
 - Drink detail pages with producer website links
 - Blog placeholder page
-- 22 seeded British drinks (15 alcoholic + 7 non-alcoholic) in database
+- 31 seeded British drinks (24 alcoholic + 7 non-alcoholic) in database
+- Champions micro-breweries and local craft producers
 - At least 1 non-alcoholic option always included in pairings
-- Fallback pairing mechanism when AI is unavailable
-- Stock imagery for all drinks
+- Enhanced fallback pairing with flavour keyword matching
+- No stock imagery (imageUrl: null) to avoid misrepresentation
 
 ## Tech Stack
 - **Frontend**: React + TypeScript, Tailwind CSS, Shadcn/UI components, Wouter routing, TanStack Query
@@ -39,10 +40,11 @@ MVP complete with:
 ## Key Features
 
 ### Drink Database
-Located in `server/storage.ts` - contains 22 British drinks:
+Located in `server/storage.ts` - contains 31 British drinks:
 
-**Alcoholic (15 drinks):**
-- Ales (Timothy Taylor's Landlord, Fuller's London Pride, Black Sheep, Adnams Broadside)
+**Alcoholic (24 drinks):**
+- Traditional Ales (Timothy Taylor's Landlord, Fuller's London Pride, Black Sheep, Adnams Broadside)
+- Micro-brewery Ales (Weetwood Cheshire Cat, Weetwood Eastgate, Thornbridge Jaipur, Hawkshead Windermere Pale, Tiny Rebel Cwtch, Siren Soundwave, Burning Sky Plateau, Beavertown Neck Oil, Wild Beer Bibble)
 - Ciders (Aspall Suffolk, Westons Vintage, Thatchers Gold)
 - Gins (Sipsmith, Cotswolds, Hendrick's)
 - Whiskies (Glenfiddich, Laphroaig)
@@ -58,10 +60,11 @@ Located in `server/storage.ts` - contains 22 British drinks:
 ### AI Pairing Engine
 Located in `server/routes.ts` at `/api/pairing`:
 - Analyzes dish flavour profile using OpenAI
-- Matches with 2-3 drinks from database
+- Uses sophisticated flavour matching principles (complementary/contrasting, intensity matching, regional affinity)
+- Matches with 2-3 drinks from database, prioritizing micro-breweries when flavour match is strong
 - Always includes at least 1 non-alcoholic option (0% ABV)
-- Generates friendly pairing explanations
-- Has fallback mechanism for when AI is unavailable
+- Generates educational explanations about flavour science
+- Has enhanced fallback mechanism with flavour keyword matching
 
 ### Producer Links
 Each drink has real producer website links (e.g., timothytaylor.co.uk, yorkshiretea.co.uk). Update the `affiliateLink` field in `server/storage.ts` to add affiliate tracking.
