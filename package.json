@@ -11,7 +11,6 @@
     "start": "NODE_ENV=production tsx server/index.ts",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm test",
-
     "db:push": "drizzle-kit push"
   },
 
