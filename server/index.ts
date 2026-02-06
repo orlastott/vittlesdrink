@@ -86,12 +86,25 @@ app.use((req, res, next) => {
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  if (process.env.NODE_ENV === "production") {
-    serveStatic(app);
-  } else {
-    const { setupVite } = await import("./vite");
-    await setupVite(httpServer, app);
-  }
+import path from "path";
+import express from "express";
+
+// Serve API routes first (this is already done in registerRoutes)
+ 
+// Serve the client build
+if (process.env.NODE_ENV === "production") {
+  // Path to the built client
+  const distPath = path.join(process.cwd(), "client/dist");
+
+  // Serve static files
+  app.use(express.static(distPath));
+
+  // All other requests (that aren't API) return index.html
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(distPath, "index.html"));
+  });
+}
+
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
   // Other ports are firewalled. Default to 5000 if not specified.
