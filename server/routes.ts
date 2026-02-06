@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage, seedDatabase } from "./storage";
+import { storage, seedDatabase } from "./storage.js";
 import OpenAI from "openai";
 import type { Drink, PairingResult } from "@shared/schema";
 
