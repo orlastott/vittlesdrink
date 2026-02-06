@@ -7,7 +7,20 @@ content: [
   "./client/src/**/*.{js,jsx,ts,tsx}",
   "./client/src/**/*.html",
   "./client/src/**/*.mdx",
+  "./client/src/index.css",
 ],
+
+  safelist: [
+    "bg-white/20",
+    "text-amber-400",
+    "text-rose-400",
+    "text-blue-400",
+    "text-emerald-600",
+    "hover:bg-white/30",
+    "border-white/30",
+    "bg-card/50",
+    "bg-card"
+  ],
 
   theme: {
     extend: {
