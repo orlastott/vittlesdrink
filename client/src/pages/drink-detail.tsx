@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Drink } from "@shared/schema";
-import vittlesLogo from "@/assets/ChatGPT_Image_Feb_1,_2026,_08_46_08_PM_1769978801593.png";
 
 async function fetchDrink(id: string): Promise<Drink> {
   const res = await fetch(`/api/drinks/${id}`);
@@ -87,19 +86,22 @@ export default function DrinkDetail() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center" data-testid="link-home">
-            <img 
-              src={vittlesLogo} 
-              alt="Vittles" 
-              className="h-12 object-contain"
-              style={{ clipPath: 'inset(28% 18% 38% 18%)' }}
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-border bg-card/60 backdrop-blur-md">
+        <div className="container mx-auto flex items-center justify-between py-4 px-6 md:px-10">
+          <a href="/" className="flex items-center gap-3">
+            <img
+              src="/images/ChatGPT_Image_Feb_1,_2026,_08_46_08_PM_1769978801593.png"
+              alt="Vittles Logo"
+              className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
-          </Link>
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-sm font-medium hover:text-accent transition-colors" data-testid="link-nav-home">Home</Link>
-            <Link href="/blog" className="text-sm font-medium text-muted-foreground hover:text-accent transition-colors" data-testid="link-nav-blog">Blog</Link>
+            <span className="text-xl md:text-2xl font-serif font-bold text-primary-foreground hidden md:block drop-shadow-md">
+              Vittles & Drink
+            </span>
+          </a>
+          <nav className="hidden md:flex gap-6 font-medium text-muted-foreground">
+            <a href="/" className="hover:text-accent transition-colors">Home</a>
+            <a href="/blog" className="hover:text-accent transition-colors">Blog</a>
           </nav>
         </div>
       </header>
