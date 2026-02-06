@@ -101,7 +101,7 @@ export default function Results() {
               className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
             <span className="text-xl md:text-2xl font-serif font-bold text-primary-foreground hidden md:block drop-shadow-md">
-              Vittles & Drink
+              Vittles
             </span>
           </a>
           <nav className="hidden md:flex gap-6 font-medium text-muted-foreground">
@@ -251,45 +251,36 @@ export default function Results() {
                         )}
 
                         <div className="flex flex-wrap gap-3 pt-2">
-                          {pairing.drink.affiliateLink && (() => {
-  const safe = isSecureLink(pairing.drink.affiliateLink);
-  return (
+  {pairing.drink.affiliateLink && (
     <a
-      href={safe ? pairing.drink.affiliateLink : "#"}
+      href={pairing.drink.affiliateLink}
       target="_blank"
       rel="noopener noreferrer"
-      title={safe ? "Visit Producer" : "This link may be insecure or unavailable"}
-      onClick={(e) => { if (!safe) e.preventDefault(); }}
-      className={!safe ? "cursor-not-allowed opacity-50" : ""}
+      title="Visit Producer"
       data-testid={`button-buy-${pairing.drink.id}`}
     >
       <Button className="gap-2">
-        Visit Producer {!safe && "⚠️"}
+        Visit Producer
         <ExternalLink className="h-4 w-4" />
       </Button>
     </a>
-  );
-})()}
+  )}
 
-{pairing.drink.reviewLink && (() => {
-  const safe = isSecureLink(pairing.drink.reviewLink);
-  return (
+  {pairing.drink.reviewLink && (
     <a
-      href={safe ? pairing.drink.reviewLink : "#"}
+      href={pairing.drink.reviewLink}
       target="_blank"
       rel="noopener noreferrer"
-      title={safe ? "See Reviews" : "This link may be insecure or unavailable"}
-      onClick={(e) => { if (!safe) e.preventDefault(); }}
-      className={!safe ? "cursor-not-allowed opacity-50" : ""}
+      title="See Reviews"
       data-testid={`button-reviews-${pairing.drink.id}`}
     >
       <Button variant="outline" className="gap-2">
-        See Reviews {!safe && "⚠️"}
+        See Reviews
         <ExternalLink className="h-4 w-4" />
       </Button>
     </a>
-  );
-})()}
+  )}
+</div>
 
                           <a
                             href={pairing.drink.affiliateLink}
@@ -320,7 +311,6 @@ export default function Results() {
                               View Details
                             </Button>
                           </Link>
-                        </div>
                       </CardContent>
                     </div>
                   </div>

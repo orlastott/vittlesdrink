@@ -11,6 +11,7 @@ import OpenAI from "openai";
 // ESM __dirname setup
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const frontendPath = path.join(__dirname, '../client/dist');
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -79,9 +80,9 @@ app.use((req, res, next) => {
   if (process.env.NODE_ENV === "production") {
     const distPath = path.join(__dirname, "../client/dist");
     app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+  app.get(/^(?!\/api).*/, (_req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
   }
 
   // Start the server

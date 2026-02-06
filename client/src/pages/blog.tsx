@@ -16,7 +16,7 @@ export default function Blog() {
               className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105"
             />
             <span className="text-xl md:text-2xl font-serif font-bold text-primary-foreground hidden md:block drop-shadow-md">
-              Vittles & Drink
+              Vittles
             </span>
           </a>
           <nav className="hidden md:flex gap-6 font-medium text-muted-foreground">
