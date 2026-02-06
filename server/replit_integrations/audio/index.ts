@@ -1,4 +1,4 @@
-export { registerAudioRoutes } from "./routes";
+export { registerAudioRoutes } from "./routes.js";
 export {
   openai,
   detectAudioFormat,
